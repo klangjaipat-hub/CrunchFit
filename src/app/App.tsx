@@ -7,8 +7,9 @@ import image_259f4f00ae189609cfc6cd0d6443440e941fe049 from 'figma:asset/259f4f00
 import image_1f76d9f4f147bfeb3dd7b5cc64678f604ab0d4ff from 'figma:asset/1f76d9f4f147bfeb3dd7b5cc64678f604ab0d4ff.png'
 import skyBackground from 'figma:asset/92cf502b59b7bf01e794c91af5e30d6dc3e6f9b9.png'
 import { useEffect, useRef, useState } from 'react';
-import { motion } from 'motion/react';
-import { Menu } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
+import { Menu, ShoppingBag } from 'lucide-react';
+import { useCart } from '../context/CartContext';
 import svgPaths from '../imports/svg-abgizgdck8';
 import nutritionSvgPaths from '../imports/svg-ipt47pjs9';
 import pricingSvgPaths from '../imports/svg-j611oe5awv';
@@ -27,14 +28,16 @@ import imgUnion from "figma:asset/55de28647d286b6cc32a76135e9937b9299e85f1.png";
 
 export default function App() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { openModal, openDrawer, items } = useCart();
+  const totalItems = items.reduce((sum, i) => sum + i.qty, 0);
 
   return (
     <div className="w-full min-h-screen bg-white overflow-x-hidden">
       {/* Fixed Navbar */}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-black/10">
         <div className="w-full px-4 sm:px-6 lg:px-10 py-4 flex items-center justify-between">
-          {/* Left: Menu & CTA */}
-          <div className="flex items-center gap-4 sm:gap-8">
+          {/* Left: Menu & Puff Ball */}
+          <div className="flex items-center gap-3 sm:gap-5">
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="p-2 hover:bg-gray-100 rounded-lg transition-colors duration-200"
@@ -42,17 +45,13 @@ export default function App() {
             >
               <Menu className="w-6 h-6 sm:w-8 sm:h-8" />
             </button>
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="bg-[#d4ff47] rounded-full transition-shadow duration-200 hover:shadow-[0_6px_20px_rgba(212,255,71,0.4)] active:shadow-[0_2px_10px_rgba(212,255,71,0.3)]"
-            >
-              <div className="content-hug flex items-center justify-center pb-[8px] pt-[12px] px-[24px] relative w-full">
-                <div className="flex flex-col font-['Nunito'] font-medium justify-center leading-[0] relative shrink-0 text-[28px] sm:text-[32px] text-black text-center whitespace-nowrap">
-                  <p className="leading-[32px] text-[20px] font-bold">BUY NOW</p>
-                </div>
-              </div>
-            </motion.button>
+            <div className="w-12 h-12 sm:w-16 sm:h-16 relative overflow-hidden rounded-full">
+              <img
+                src={imgGeminiGeneratedImageXbgr6Vxbgr6Vxbgr3}
+                alt="CrunchFit mascot"
+                className="w-full h-full object-cover animate-[spin_20s_linear_infinite]"
+              />
+            </div>
           </div>
 
           {/* Center: Logo */}
@@ -60,13 +59,41 @@ export default function App() {
             CrunchFit
           </h1>
 
-          {/* Right: Character Icon */}
-          <div className="w-12 h-12 sm:w-16 sm:h-16 relative overflow-hidden rounded-full">
-            <img
-              src={imgGeminiGeneratedImageXbgr6Vxbgr6Vxbgr3}
-              alt="CrunchFit mascot"
-              className="w-full h-full object-cover animate-[spin_20s_linear_infinite]"
-            />
+          {/* Right: BUY NOW + Cart */}
+          <div className="flex items-center gap-3">
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => openModal()}
+              className="bg-[#d4ff47] rounded-full transition-shadow duration-200 hover:shadow-[0_6px_20px_rgba(212,255,71,0.4)] active:shadow-[0_2px_10px_rgba(212,255,71,0.3)]"
+            >
+              <div className="flex items-center justify-center pb-[8px] pt-[12px] px-[24px]">
+                <p className="font-['Nunito'] font-bold text-[20px] leading-[32px] text-black whitespace-nowrap">BUY NOW</p>
+              </div>
+            </motion.button>
+
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => openDrawer()}
+              className="relative bg-black rounded-full pb-[8px] pt-[12px] px-[24px] flex items-center gap-2 transition-shadow duration-200 hover:shadow-[0_6px_20px_rgba(0,0,0,0.25)]"
+              aria-label="Cart"
+            >
+              <ShoppingBag className="w-5 h-5 text-[#d4ff47]" />
+              <AnimatePresence>
+                {totalItems > 0 && (
+                  <motion.span
+                    key={totalItems}
+                    initial={{ scale: 0, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    exit={{ scale: 0, opacity: 0 }}
+                    className="font-['Nunito'] font-bold text-[14px] leading-none text-[#d4ff47]"
+                  >
+                    {totalItems}
+                  </motion.span>
+                )}
+              </AnimatePresence>
+            </motion.button>
           </div>
         </div>
       </nav>
@@ -834,19 +861,14 @@ export default function App() {
                           </div>
                         </div>
                       </div>
-                      <div className="bg-[#d4ff47] relative rounded-[32px] shrink-0 w-full">
-                        <motion.div
-                          whileHover={{ scale: 1.02 }}
-                          whileTap={{ scale: 0.98 }}
-                          className="flex flex-row items-center justify-center size-full cursor-pointer"
-                        >
-                          <div className="content-stretch flex items-center justify-center pb-[8px] pt-[12px] px-[24px] relative w-full">
-                            <div className="flex flex-col font-['Nunito'] font-medium justify-center leading-[0] relative shrink-0 text-[28px] sm:text-[32px] text-black text-center whitespace-nowrap">
-                              <p className="leading-[32px] text-[24px] font-bold">BUY NOW</p>
-                            </div>
-                          </div>
-                        </motion.div>
-                      </div>
+                      <motion.button
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        onClick={() => openModal({ packId: 'starter' })}
+                        className="bg-[#d4ff47] relative rounded-[32px] shrink-0 w-full pb-[8px] pt-[12px] px-[24px] cursor-pointer"
+                      >
+                        <p className="font-['Nunito'] font-bold leading-[32px] text-[24px] text-black text-center">BUY NOW</p>
+                      </motion.button>
                     </div>
                   </div>
                 </motion.div>
@@ -938,19 +960,14 @@ export default function App() {
                           </div>
                         </div>
                       </div>
-                      <div className="bg-[#d4ff47] relative rounded-[32px] shrink-0 w-full">
-                        <motion.div
-                          whileHover={{ scale: 1.02 }}
-                          whileTap={{ scale: 0.98 }}
-                          className="flex flex-row items-center justify-center size-full cursor-pointer"
-                        >
-                          <div className="content-stretch flex items-center justify-center pb-[8px] pt-[12px] px-[24px] relative w-full">
-                            <div className="flex flex-col font-['Nunito'] font-medium justify-center leading-[0] relative shrink-0 text-[28px] sm:text-[32px] text-black text-center whitespace-nowrap">
-                              <p className="leading-[32px] text-[24px] font-bold">BUY NOW</p>
-                            </div>
-                          </div>
-                        </motion.div>
-                      </div>
+                      <motion.button
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        onClick={() => openModal({ packId: 'office-survivor' })}
+                        className="bg-[#d4ff47] relative rounded-[32px] shrink-0 w-full pb-[8px] pt-[12px] px-[24px] cursor-pointer"
+                      >
+                        <p className="font-['Nunito'] font-bold leading-[32px] text-[24px] text-black text-center">BUY NOW</p>
+                      </motion.button>
                     </div>
                   </div>
                 </motion.div>
@@ -1021,19 +1038,14 @@ export default function App() {
                       </div>
                       <p className="font-['Nunito'] leading-[24px] relative shrink-0 text-[20px] sm:text-[22px] lg:text-[24px]">Get an extra 15% off all packages (Cancel or change flavors anytime)</p>
                     </div>
-                    <div className="bg-[#d4ff47] relative rounded-[32px] shrink-0 w-full">
-                      <motion.div
-                        whileHover={{ scale: 1.02 }}
-                        whileTap={{ scale: 0.98 }}
-                        className="flex flex-row items-center justify-center size-full cursor-pointer"
-                      >
-                        <div className="content-stretch flex items-center justify-center pb-[8px] pt-[12px] px-[24px] relative w-full">
-                          <div className="flex flex-col font-['Nunito'] font-medium justify-center leading-[0] relative shrink-0 text-[28px] sm:text-[32px] text-black text-center whitespace-nowrap">
-                            <p className="leading-[32px] text-[24px] font-bold">SUBSCRIBE</p>
-                          </div>
-                        </div>
-                      </motion.div>
-                    </div>
+                    <motion.button
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={() => openModal({ type: 'subscription' })}
+                      className="bg-[#d4ff47] relative rounded-[32px] shrink-0 w-full pb-[8px] pt-[12px] px-[24px] cursor-pointer"
+                    >
+                      <p className="font-['Nunito'] font-bold leading-[32px] text-[24px] text-black text-center">SUBSCRIBE</p>
+                    </motion.button>
                   </div>
                 </div>
               </motion.div>
