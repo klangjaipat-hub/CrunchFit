@@ -6,12 +6,14 @@ import CheckoutPage from './pages/CheckoutPage.tsx';
 import ThankYouPage from './pages/ThankYouPage.tsx';
 import ManageSubscriptionPage from './pages/ManageSubscriptionPage.tsx';
 import { CartProvider } from './context/CartContext.tsx';
+import { LanguageProvider } from './context/LanguageContext.tsx';
 import CartDrawer from './components/CartDrawer.tsx';
 import PackageSelectionModal from './components/PackageSelectionModal.tsx';
 import './styles/index.css';
 
 createRoot(document.getElementById('root')!).render(
   <BrowserRouter>
+    <LanguageProvider>
     <CartProvider>
       <Routes>
         <Route path="/" element={<App />} />
@@ -23,5 +25,6 @@ createRoot(document.getElementById('root')!).render(
       <PackageSelectionModal />
       <Toaster richColors position="top-center" />
     </CartProvider>
+    </LanguageProvider>
   </BrowserRouter>
 );

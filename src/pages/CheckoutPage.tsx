@@ -540,7 +540,7 @@ export default function CheckoutPage() {
               {/* Total */}
               <div className="border-t border-black pt-4 mt-4 flex justify-between items-center">
                 <p className="font-['Anton'] text-xl text-black">TOTAL</p>
-                <p className="font-['Anton'] text-3xl text-black">฿{total.toLocaleString()}</p>
+                <p className="keep-anton font-['Anton'] text-3xl text-black">฿{total.toLocaleString()}</p>
               </div>
 
               <motion.button

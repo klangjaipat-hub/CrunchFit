@@ -8,8 +8,9 @@ import image_1f76d9f4f147bfeb3dd7b5cc64678f604ab0d4ff from 'figma:asset/1f76d9f4
 import skyBackground from 'figma:asset/92cf502b59b7bf01e794c91af5e30d6dc3e6f9b9.png'
 import { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Menu, ShoppingBag } from 'lucide-react';
+import { ShoppingBag, AlertCircle, CheckCircle2, Package, CalendarClock, Globe } from 'lucide-react';
 import { useCart } from '../context/CartContext';
+import { useLanguage } from '../context/LanguageContext';
 import svgPaths from '../imports/svg-abgizgdck8';
 import nutritionSvgPaths from '../imports/svg-ipt47pjs9';
 import pricingSvgPaths from '../imports/svg-j611oe5awv';
@@ -27,8 +28,8 @@ import imgContainer2 from "figma:asset/7331c488a7d8f6b3f8f5ab61b638ba30895047d9.
 import imgUnion from "figma:asset/55de28647d286b6cc32a76135e9937b9299e85f1.png";
 
 export default function App() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { openModal, openDrawer, items } = useCart();
+  const { lang, toggleLang, t } = useLanguage();
   const totalItems = items.reduce((sum, i) => sum + i.qty, 0);
 
   return (
@@ -36,15 +37,8 @@ export default function App() {
       {/* Fixed Navbar */}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-black/10">
         <div className="w-full px-4 sm:px-6 lg:px-10 py-4 flex items-center justify-between">
-          {/* Left: Menu & Puff Ball */}
+          {/* Left: Puff Ball */}
           <div className="flex items-center gap-3 sm:gap-5">
-            <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 hover:bg-gray-100 rounded-lg transition-colors duration-200"
-              aria-label="Menu"
-            >
-              <Menu className="w-6 h-6 sm:w-8 sm:h-8" />
-            </button>
             <div className="w-12 h-12 sm:w-16 sm:h-16 relative overflow-hidden rounded-full">
               <img
                 src={imgGeminiGeneratedImageXbgr6Vxbgr6Vxbgr3}
@@ -59,16 +53,25 @@ export default function App() {
             CrunchFit
           </h1>
 
-          {/* Right: BUY NOW + Cart */}
+          {/* Right: Lang toggle + BUY NOW + Cart */}
           <div className="flex items-center gap-3">
+            {/* Language Switcher */}
+            <button
+              onClick={toggleLang}
+              aria-label={`Switch to ${lang === 'en' ? 'Thai' : 'English'}`}
+              className="h-[42px] w-[42px] sm:h-[52px] sm:w-[52px] flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors duration-200"
+            >
+              <Globe className="w-5 h-5 text-black" />
+            </button>
+
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => openModal()}
               className="bg-[#d4ff47] rounded-full transition-shadow duration-200 hover:shadow-[0_6px_20px_rgba(212,255,71,0.4)] active:shadow-[0_2px_10px_rgba(212,255,71,0.3)]"
             >
-              <div className="flex items-center justify-center pb-[8px] pt-[12px] px-[24px]">
-                <p className="font-['Nunito'] font-bold text-[20px] leading-[32px] text-black whitespace-nowrap">BUY NOW</p>
+              <div className="flex items-center justify-center pb-[6px] pt-[10px] px-[16px] sm:pb-[8px] sm:pt-[12px] sm:px-[24px]">
+                <p className="font-['Nunito'] font-bold text-[15px] sm:text-[20px] leading-[32px] text-black whitespace-nowrap">{t('nav_buy_now')}</p>
               </div>
             </motion.button>
 
@@ -76,7 +79,7 @@ export default function App() {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => openDrawer()}
-              className="relative bg-black rounded-full pb-[8px] pt-[12px] px-[24px] flex items-center gap-2 transition-shadow duration-200 hover:shadow-[0_6px_20px_rgba(0,0,0,0.25)]"
+              className="relative bg-black rounded-full pb-[16px] pt-[16px] px-[24px] flex items-center gap-2 transition-shadow duration-200 hover:shadow-[0_6px_20px_rgba(0,0,0,0.25)]"
               aria-label="Cart"
             >
               <ShoppingBag className="w-5 h-5 text-[#d4ff47]" />
@@ -104,7 +107,7 @@ export default function App() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-100px" }}
         transition={{ duration: 0.8, ease: "easeOut" }}
-        className="relative w-full pt-[20rem] sm:pt-[22rem] lg:pt-[24rem] pb-4 sm:pb-6 lg:pb-8 flex items-center justify-center overflow-hidden"
+        className="relative w-full pt-[5rem] sm:pt-[14rem] lg:pt-[20rem] pb-4 sm:pb-6 lg:pb-8 flex items-center justify-center overflow-hidden"
       >
         {/* Content Container */}
         <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-20 relative overflow-visible">
@@ -129,43 +132,43 @@ export default function App() {
                   <img
                     src={image_e31ba1d682bc467fb8b9fcde2e49546f68932b5a}
                     alt="CrunchFit Original Flavor"
-                    className="h-96 w-auto object-contain"
+                    className="h-40 sm:h-64 lg:h-96 w-auto object-contain"
                   />
                   <img
                     src={image_c5caff8246ad0b4243905ebe6e06aee84e923b51}
                     alt="CrunchFit Spicy BBQ"
-                    className="h-96 w-auto object-contain"
+                    className="h-40 sm:h-64 lg:h-96 w-auto object-contain"
                   />
                   <img
                     src={image_8efcfd2f0addb833798bf18a2e4a35328aa693d1}
                     alt="CrunchFit Original Flavor"
-                    className="h-96 w-auto object-contain"
+                    className="h-40 sm:h-64 lg:h-96 w-auto object-contain"
                   />
                   <img
                     src={image_47187052bcd60a438309b709205279309e5b66d7}
                     alt="CrunchFit Spicy BBQ"
-                    className="h-96 w-auto object-contain"
+                    className="h-40 sm:h-64 lg:h-96 w-auto object-contain"
                   />
                   {/* Duplicate set for seamless loop */}
                   <img
                     src={image_e31ba1d682bc467fb8b9fcde2e49546f68932b5a}
                     alt="CrunchFit Original Flavor"
-                    className="h-96 w-auto object-contain"
+                    className="h-40 sm:h-64 lg:h-96 w-auto object-contain"
                   />
                   <img
                     src={image_c5caff8246ad0b4243905ebe6e06aee84e923b51}
                     alt="CrunchFit Spicy BBQ"
-                    className="h-96 w-auto object-contain"
+                    className="h-40 sm:h-64 lg:h-96 w-auto object-contain"
                   />
                   <img
                     src={image_8efcfd2f0addb833798bf18a2e4a35328aa693d1}
                     alt="CrunchFit Original Flavor"
-                    className="h-96 w-auto object-contain"
+                    className="h-40 sm:h-64 lg:h-96 w-auto object-contain"
                   />
                   <img
                     src={image_47187052bcd60a438309b709205279309e5b66d7}
                     alt="CrunchFit Spicy BBQ"
-                    className="h-96 w-auto object-contain"
+                    className="h-40 sm:h-64 lg:h-96 w-auto object-contain"
                   />
                 </motion.div>
               </div>
@@ -243,12 +246,18 @@ export default function App() {
           <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-20">
             {/* Title */}
             <h2 className="font-['Anton'] text-4xl sm:text-5xl lg:text-7xl text-center text-black uppercase tracking-wider mb-6 sm:mb-8">
-              Ultimate guilt-free snack
+              {t('hero_title')}
             </h2>
 
             {/* Description */}
             <div className="max-w-4xl mx-auto mb-32 sm:mb-40 lg:mb-52">
-              <p className="font-['Nunito'] text-center text-black leading-relaxed text-[24px] text-[#464646]">Meet CrunchFit Plant-Protein Puffs: the ultimate guilt-free snack! Made from golden pea protein and organic brown rice, our puffs are 100% air-roasted, never fried. Each bag delivers a satisfying, oil-free crunch with <span className="font-bold">12g of protein</span> and only <span className="font-bold">90 calories</span>. With zero MSG and 50% less sodium, it's the perfect healthy bite for fitness lovers and busy office workers.</p>
+              {lang === 'th' ? (
+                <p className="font-['Nunito'] text-center text-black leading-relaxed text-base sm:text-xl lg:text-[24px] text-[#464646]">
+                  แนะนำ CrunchFit Plant-Protein Puffs: ขนมคลีนสุดจัดที่คุณรอคอย! ทำจากโปรตีนถั่วลันเตาและข้าวกล้องออร์แกนิก อบลมร้อน 100% ไม่ทอด ทุกถุงให้ความกรอบอร่อยแบบไม่มีน้ำมัน พร้อม<span className="font-bold">โปรตีน 12 กรัม</span>และเพียง<span className="font-bold">90 แคลอรี่</span> ไม่มี MSG โซเดียมน้อยกว่า 50% เหมาะสำหรับคนรักสุขภาพและคนทำงานออฟฟิศ
+                </p>
+              ) : (
+                <p className="font-['Nunito'] text-center text-black leading-relaxed text-base sm:text-xl lg:text-[24px] text-[#464646]">Meet CrunchFit Plant-Protein Puffs: the ultimate guilt-free snack! Made from golden pea protein and organic brown rice, our puffs are 100% air-roasted, never fried. Each bag delivers a satisfying, oil-free crunch with <span className="font-bold">12g of protein</span> and only <span className="font-bold">90 calories</span>. With zero MSG and 50% less sodium, it's the perfect healthy bite for fitness lovers and busy office workers.</p>
+              )}
             </div>
           </div>
 
@@ -355,8 +364,8 @@ export default function App() {
                 viewport={{ once: true, margin: "-100px" }}
                 transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
               >
-                <h3 
-                  className="font-['Anton'] text-[80px] xl:text-[130px] leading-[1.3] tracking-[5px] uppercase text-[#e9ec5c]"
+                <h3
+                  className="keep-anton font-['Anton'] text-[80px] xl:text-[130px] leading-[1.3] tracking-[5px] uppercase text-[#e9ec5c]"
                   style={{
                     textShadow: `
                       -1px -1px 0 #000,
@@ -403,8 +412,8 @@ export default function App() {
                 viewport={{ once: true, margin: "-100px" }}
                 transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
               >
-                <h3 
-                  className="font-['Anton'] text-[80px] xl:text-[130px] leading-[1.3] text-right uppercase text-[#e65248]"
+                <h3
+                  className="keep-anton font-['Anton'] text-[80px] xl:text-[130px] leading-[1.3] text-right uppercase text-[#e65248]"
                   style={{
                     textShadow: `
                       -1px -1px 0 #000,
@@ -430,8 +439,8 @@ export default function App() {
                 viewport={{ once: true, margin: "-100px" }}
                 transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
               >
-                <h3 
-                  className="font-['Anton'] text-3xl sm:text-4xl leading-[1.3] tracking-[3px] uppercase text-[#e9ec5c]"
+                <h3
+                  className="keep-anton font-['Anton'] text-3xl sm:text-4xl leading-[1.3] tracking-[3px] uppercase text-[#e9ec5c]"
                   style={{
                     textShadow: `
                       -2px -2px 0 #000,
@@ -447,8 +456,8 @@ export default function App() {
                 >
                   Truffle<br />Vegan<br />Cheese
                 </h3>
-                <h3 
-                  className="font-['Anton'] text-3xl sm:text-4xl leading-[1.3] tracking-[3px] text-right uppercase text-[#e65248]"
+                <h3
+                  className="keep-anton font-['Anton'] text-3xl sm:text-4xl leading-[1.3] tracking-[3px] text-right uppercase text-[#e65248]"
                   style={{
                     textShadow: `
                       -2px -2px 0 #000,
@@ -482,8 +491,8 @@ export default function App() {
                 }}
                 className="bg-white border border-black rounded-[20px] shadow-[4px_4px_0px_0px_black] p-6 sm:p-8 flex flex-col gap-3 cursor-pointer"
               >
-                <h4 className="font-['Nunito'] font-black leading-[1.2] text-black text-center uppercase text-[24px]">High Plant<br />Protein</h4>
-                <p className="font-['Nunito'] leading-[1.3] text-black text-center text-[#464646] text-[20px]">Packs 12g of protein (equal to about 2 eggs) to keep you full longer and crush cravings</p>
+                <h4 className="font-['Nunito'] font-black leading-[1.2] text-black text-center uppercase text-base sm:text-lg lg:text-[24px]">{t('feature_protein_title').split('\n').map((l, i, a) => <span key={i}>{l}{i < a.length - 1 && <br />}</span>)}</h4>
+                <p className="font-['Nunito'] leading-[1.3] text-black text-center text-[#464646] text-sm sm:text-base lg:text-[20px]">{t('feature_protein_desc')}</p>
               </motion.div>
 
               {/* Low Calorie & Zero Fat */}
@@ -499,10 +508,8 @@ export default function App() {
                 }}
                 className="bg-white border border-black rounded-[20px] shadow-[4px_4px_0px_0px_black] p-6 sm:p-8 flex flex-col gap-3 cursor-pointer"
               >
-                <h4 className="font-['Nunito'] font-black leading-[1.2] text-black text-center uppercase text-[24px]">
-                  Low Calorie<br />& Zero Fat
-                </h4>
-                <p className="font-['Nunito'] leading-[1.3] text-black text-center text-[#464646] text-[20px]">Contains only 90 kcal and 0% trans fat, so you can finish the whole bag without needing extra cardio</p>
+                <h4 className="font-['Nunito'] font-black leading-[1.2] text-black text-center uppercase text-base sm:text-lg lg:text-[24px]">{t('feature_calorie_title').split('\n').map((l, i, a) => <span key={i}>{l}{i < a.length - 1 && <br />}</span>)}</h4>
+                <p className="font-['Nunito'] leading-[1.3] text-black text-center text-[#464646] text-sm sm:text-base lg:text-[20px]">{t('feature_calorie_desc')}</p>
               </motion.div>
 
               {/* Clean & Safe Ingredients */}
@@ -518,10 +525,8 @@ export default function App() {
                 }}
                 className="bg-white border border-black rounded-[20px] shadow-[4px_4px_0px_0px_black] p-6 sm:p-8 flex flex-col gap-3 cursor-pointer"
               >
-                <h4 className="font-['Nunito'] font-black leading-[1.2] text-black text-center uppercase text-[24px]">
-                  Clean & Safe<br />Ingredients
-                </h4>
-                <p className="font-['Nunito'] leading-[1.3] text-black text-center text-[#464646] text-[20px]">Made with a clean recipe featuring zero MSG, preservatives, or gluten for easy digestion and no bloating</p>
+                <h4 className="font-['Nunito'] font-black leading-[1.2] text-black text-center uppercase text-base sm:text-lg lg:text-[24px]">{t('feature_clean_title').split('\n').map((l, i, a) => <span key={i}>{l}{i < a.length - 1 && <br />}</span>)}</h4>
+                <p className="font-['Nunito'] leading-[1.3] text-black text-center text-[#464646] text-sm sm:text-base lg:text-[20px]">{t('feature_clean_desc')}</p>
               </motion.div>
 
               {/* Vegan Friendly */}
@@ -537,10 +542,8 @@ export default function App() {
                 }}
                 className="bg-white border border-black rounded-[20px] shadow-[4px_4px_0px_0px_black] p-6 sm:p-8 flex flex-col gap-3 cursor-pointer"
               >
-                <h4 className="font-['Nunito'] font-black leading-[1.2] text-black text-center uppercase text-[24px]">
-                  Vegan<br />Friendly
-                </h4>
-                <p className="font-['Nunito'] leading-[1.3] text-black text-center text-[#464646] text-[20px]">Crafted from 100% plant-based ingredients, making it completely vegan, dairy-free, and worry-free</p>
+                <h4 className="font-['Nunito'] font-black leading-[1.2] text-black text-center uppercase text-base sm:text-lg lg:text-[24px]">{t('feature_vegan_title').split('\n').map((l, i, a) => <span key={i}>{l}{i < a.length - 1 && <br />}</span>)}</h4>
+                <p className="font-['Nunito'] leading-[1.3] text-black text-center text-[#464646] text-sm sm:text-base lg:text-[20px]">{t('feature_vegan_desc')}</p>
               </motion.div>
             </div>
           </div>
@@ -617,24 +620,24 @@ export default function App() {
                     whileHover={{ y: -4, boxShadow: "6px 6px 0px 0px black" }}
                     className="bg-white border border-black rounded-[20px] shadow-[4px_4px_0px_0px_black] p-4 sm:p-6 lg:p-8 flex flex-col items-center justify-center gap-2 sm:gap-4 cursor-pointer"
                   >
-                    <p className="font-['Anton'] text-3xl sm:text-4xl lg:text-[40px] leading-[32px] text-black">90</p>
-                    <p className="font-['Nunito'] font-bold text-base sm:text-lg lg:text-[24px] leading-[20px] text-black text-center">Calories</p>
+                    <p className="keep-anton font-['Anton'] text-3xl sm:text-4xl lg:text-[40px] leading-[32px] text-black">90</p>
+                    <p className="font-['Nunito'] font-bold text-base sm:text-lg lg:text-[24px] leading-[20px] text-black text-center">{t('stat_calories')}</p>
                   </motion.div>
 
                   <motion.div
                     whileHover={{ y: -4, boxShadow: "6px 6px 0px 0px black" }}
                     className="bg-white border border-black rounded-[20px] shadow-[4px_4px_0px_0px_black] p-4 sm:p-6 lg:p-8 flex flex-col items-center justify-center gap-2 sm:gap-4 cursor-pointer"
                   >
-                    <p className="font-['Anton'] text-3xl sm:text-4xl lg:text-[40px] leading-[32px] text-black">0g</p>
-                    <p className="font-['Nunito'] font-bold text-base sm:text-lg lg:text-[24px] leading-[20px] text-black text-center">Sugar</p>
+                    <p className="keep-anton font-['Anton'] text-3xl sm:text-4xl lg:text-[40px] leading-[32px] text-black">0g</p>
+                    <p className="font-['Nunito'] font-bold text-base sm:text-lg lg:text-[24px] leading-[20px] text-black text-center">{t('stat_sugar')}</p>
                   </motion.div>
 
                   <motion.div
                     whileHover={{ y: -4, boxShadow: "6px 6px 0px 0px black" }}
                     className="bg-white border border-black rounded-[20px] shadow-[4px_4px_0px_0px_black] p-4 sm:p-6 lg:p-8 flex flex-col items-center justify-center gap-2 sm:gap-4 cursor-pointer"
                   >
-                    <p className="font-['Anton'] text-3xl sm:text-4xl lg:text-[40px] leading-[32px] text-black">12g</p>
-                    <p className="font-['Nunito'] font-bold text-base sm:text-lg lg:text-[24px] leading-[20px] text-black text-center">Protein</p>
+                    <p className="keep-anton font-['Anton'] text-3xl sm:text-4xl lg:text-[40px] leading-[32px] text-black">12g</p>
+                    <p className="font-['Nunito'] font-bold text-base sm:text-lg lg:text-[24px] leading-[20px] text-black text-center">{t('stat_protein')}</p>
                   </motion.div>
                 </div>
               </div>
@@ -665,78 +668,78 @@ export default function App() {
 
                 {/* Content */}
                 <div className="space-y-2">
-                  <p className="font-['Nunito'] leading-[20px] text-[20px]">1 serving per container</p>
-                  
+                  <p className="font-['Nunito'] leading-[20px] text-[20px]">{t('nutrition_serving')}</p>
+
                   <div className="border-b-4 border-black pb-1 flex justify-between items-center">
-                    <p className="font-['Nunito'] font-bold leading-[24px] text-[20px]">Serving size</p>
+                    <p className="font-['Nunito'] font-bold leading-[24px] text-[20px]">{t('nutrition_serving_size')}</p>
                     <p className="font-['Nunito'] leading-[24px] text-[20px]">1 Package (35g)</p>
                   </div>
 
                   <div className="border-b-4 border-black py-2">
-                    <p className="font-['Nunito'] font-bold leading-[24px] text-[20px]">Amount Per Serving</p>
-                    <div className="flex justify-between items-center font-['Anton'] text-3xl sm:text-4xl lg:text-[36px] leading-[40px]">
-                      <p>Calories</p>
+                    <p className="font-['Nunito'] font-bold leading-[24px] text-[20px]">{t('nutrition_amount')}</p>
+                    <div className="keep-anton flex justify-between items-center font-['Anton'] text-3xl sm:text-4xl lg:text-[36px] leading-[40px]">
+                      <p>{t('nutrition_calories')}</p>
                       <p>90</p>
                     </div>
                   </div>
 
                   <div className="border-b-4 border-black pb-1 text-right">
-                    <p className="font-['Nunito'] font-bold leading-[20px] text-[16px]">% Daily Value*</p>
+                    <p className="font-['Nunito'] font-bold leading-[20px] text-[16px]">{t('nutrition_dv')}</p>
                   </div>
 
                   <div className="space-y-1">
                     <div className="border-b border-[#99a1af] pb-1 flex justify-between">
-                      <p className="font-['Nunito'] leading-[24px] text-[20px]"><span className="font-bold">Total Fat</span> 1g</p>
+                      <p className="font-['Nunito'] leading-[24px] text-[20px]"><span className="font-bold">{t('nutrition_total_fat')}</span> 1g</p>
                       <p className="font-['Nunito'] font-bold leading-[24px] text-[20px]">1%</p>
                     </div>
 
                     <div className="border-b border-[#99a1af] pb-1 pl-4 flex justify-between">
-                      <p className="font-['Nunito'] text-lg sm:text-xl lg:text-[20px] leading-[24px]">Saturated Fat 0g</p>
+                      <p className="font-['Nunito'] text-lg sm:text-xl lg:text-[20px] leading-[24px]">{t('nutrition_sat_fat')} 0g</p>
                       <p className="font-['Nunito'] font-bold text-lg sm:text-xl lg:text-[20px] leading-[24px]">0%</p>
                     </div>
 
                     <div className="border-b border-[#99a1af] pb-1 pl-4">
-                      <p className="font-['Nunito'] italic text-lg sm:text-xl lg:text-[20px] leading-[24px]"><span className="italic">Trans </span><span className="not-italic">Fat</span><span className="italic"> 0g</span></p>
+                      <p className="font-['Nunito'] italic text-lg sm:text-xl lg:text-[20px] leading-[24px]"><span className="italic">{t('nutrition_trans_fat')} </span><span className="not-italic italic">0g</span></p>
                     </div>
 
                     <div className="border-b border-[#99a1af] pb-1 flex justify-between">
-                      <p className="font-['Nunito'] text-lg sm:text-xl lg:text-[20px] leading-[24px]"><span className="font-bold">Cholesterol</span> 0mg</p>
+                      <p className="font-['Nunito'] text-lg sm:text-xl lg:text-[20px] leading-[24px]"><span className="font-bold">{t('nutrition_cholesterol')}</span> 0mg</p>
                       <p className="font-['Nunito'] font-bold text-lg sm:text-xl lg:text-[20px] leading-[24px]">0%</p>
                     </div>
 
                     <div className="border-b border-[#99a1af] pb-1 flex justify-between">
-                      <p className="font-['Nunito'] text-lg sm:text-xl lg:text-[20px] leading-[24px]"><span className="font-bold">Sodium</span> 0mg</p>
+                      <p className="font-['Nunito'] text-lg sm:text-xl lg:text-[20px] leading-[24px]"><span className="font-bold">{t('nutrition_sodium')}</span> 0mg</p>
                       <p className="font-['Nunito'] font-bold text-lg sm:text-xl lg:text-[20px] leading-[24px]">0%</p>
                     </div>
 
                     <div className="border-b border-[#99a1af] pb-1 flex justify-between">
-                      <p className="font-['Nunito'] text-lg sm:text-xl lg:text-[20px] leading-[24px]"><span className="font-bold">Total Carbohydrate</span> 8g</p>
+                      <p className="font-['Nunito'] text-lg sm:text-xl lg:text-[20px] leading-[24px]"><span className="font-bold">{t('nutrition_carb')}</span> 8g</p>
                       <p className="font-['Nunito'] font-bold text-lg sm:text-xl lg:text-[20px] leading-[24px]">3%</p>
                     </div>
 
                     <div className="border-b border-[#99a1af] pb-1 pl-4 flex justify-between">
-                      <p className="font-['Nunito'] text-lg sm:text-xl lg:text-[20px] leading-[24px]">Dietary Fiber 0g</p>
+                      <p className="font-['Nunito'] text-lg sm:text-xl lg:text-[20px] leading-[24px]">{t('nutrition_fiber')} 0g</p>
                       <p className="font-['Nunito'] font-bold text-lg sm:text-xl lg:text-[20px] leading-[24px]">0%</p>
                     </div>
 
                     <div className="border-b border-[#99a1af] pb-1 pl-4">
-                      <p className="font-['Nunito'] text-lg sm:text-xl lg:text-[20px] leading-[24px]">Total Sugars 0g</p>
+                      <p className="font-['Nunito'] text-lg sm:text-xl lg:text-[20px] leading-[24px]">{t('nutrition_sugars')} 0g</p>
                     </div>
 
                     <div className="border-b-4 border-black pb-2 pl-8 flex justify-between">
-                      <p className="font-['Nunito'] text-base sm:text-lg lg:text-[20px] leading-[20px]">Includes 0g Added Sugars</p>
+                      <p className="font-['Nunito'] text-base sm:text-lg lg:text-[20px] leading-[20px]">{t('nutrition_added_sugars')}</p>
                       <p className="font-['Nunito'] font-bold text-lg sm:text-xl lg:text-[20px] leading-[24px]">0%</p>
                     </div>
 
                     <div className="flex justify-between font-['Nunito'] font-bold pt-1">
-                      <p className="text-lg sm:text-xl lg:text-[20px] leading-[24px]">Protein 12g</p>
+                      <p className="text-lg sm:text-xl lg:text-[20px] leading-[24px]">{t('nutrition_protein')} 12g</p>
                       <p className="text-lg sm:text-xl lg:text-[20px] leading-[28px]">24%</p>
                     </div>
                   </div>
 
                   <div className="border-t-4 border-black pt-4">
                     <p className="font-['Nunito'] text-sm sm:text-base lg:text-[20px] leading-[20px]">
-                      *The % Daily Value (DV) tells you how much a nutrient in a serving of food contributes to a daily diet. 2,000 calories a day is used for general nutrition advice.
+                      {t('nutrition_dv_note')}
                     </p>
                   </div>
                 </div>
@@ -744,20 +747,23 @@ export default function App() {
             </div>
 
             {/* Bottom Info Bar */}
-            <div className="bg-white border border-black rounded-[20px] shadow-[4px_4px_0px_0px_black] p-4 lg:p-4">
-              <div className="flex flex-col sm:flex-row items-center justify-between gap-4 lg:gap-4 divide-y sm:divide-y-0 sm:divide-x divide-black">
-                <div className="flex-1 flex items-center justify-center py-2 sm:py-0">
-                  <p className="font-['Nunito'] text-sm sm:text-base lg:text-[20px] leading-[20px] text-center px-2">Contains soy</p>
-                </div>
-                <div className="flex-1 flex items-center justify-center py-2 sm:py-0">
-                  <p className="font-['Nunito'] text-sm sm:text-base lg:text-[20px] leading-[20px] text-center px-2">Gluten-Free, Dairy-Free, Nut-Free</p>
-                </div>
-                <div className="flex-1 flex items-center justify-center py-2 sm:py-0">
-                  <p className="font-['Nunito'] text-sm sm:text-base lg:text-[20px] leading-[20px] text-center px-2">Light and moisture-resistant zip-lock packaging</p>
-                </div>
-                <div className="flex-1 flex items-center justify-center py-2 sm:py-0">
-                  <p className="font-['Nunito'] text-sm sm:text-base lg:text-[20px] leading-[20px] text-center px-2">Shelf life: 8 months (from manufacturing date)</p>
-                </div>
+            <div className="bg-white border border-black rounded-[20px] shadow-[4px_4px_0px_0px_black] p-4 lg:p-6">
+              <div className="flex flex-col sm:flex-row sm:items-stretch justify-between gap-0">
+                {[
+                  { icon: <AlertCircle className="w-5 h-5 shrink-0" />, text: t('info_soy') },
+                  { icon: <CheckCircle2 className="w-5 h-5 shrink-0" />, text: t('info_free') },
+                  { icon: <Package className="w-5 h-5 shrink-0" />, text: t('info_packaging') },
+                  { icon: <CalendarClock className="w-5 h-5 shrink-0" />, text: t('info_shelf') },
+                ].map((item, i, arr) => (
+                  <div
+                    key={i}
+                    className={`flex-1 flex flex-row items-center justify-center gap-3 px-4 py-3
+                      ${i < arr.length - 1 ? "border-b sm:border-b-0 sm:border-r border-black" : ""}`}
+                  >
+                    <span className="shrink-0">{item.icon}</span>
+                    <p className="font-['Nunito'] text-sm sm:text-base lg:text-[18px] leading-snug text-left">{item.text}</p>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
@@ -773,7 +779,7 @@ export default function App() {
       >
           <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-20">
             <h2 className="font-['Anton'] text-4xl sm:text-5xl lg:text-[72px] text-center text-black uppercase tracking-[3px] mb-12 sm:mb-16 lg:mb-20">
-              Choose Your Pack
+              {t('pricing_title')}
             </h2>
 
             <div className="flex flex-col gap-6 sm:gap-8 lg:gap-10">
@@ -798,7 +804,7 @@ export default function App() {
 
                   {/* Content */}
                   <div className="relative overflow-clip rounded-[inherit] size-full">
-                    <div className="content-stretch flex flex-col gap-[16px] items-start p-[36px] relative size-full">
+                    <div className="content-stretch flex flex-col gap-[16px] items-start p-6 sm:p-[36px] relative size-full">
                       {/* Blue Character - Positioned absolutely */}
                       <div className="absolute h-[752.999px] left-[-150px] top-[125px] w-[763.613px]">
                         <div className="absolute inset-[-0.53%_0_-0.53%_-0.52%]">
@@ -825,7 +831,7 @@ export default function App() {
                       </div>
 
                       <div className="content-stretch flex flex-col gap-[16px] items-start justify-center relative shrink-0">
-                        <p className="font-['Anton'] leading-none text-[40px] sm:text-[48px] lg:text-[56px] text-white tracking-[2px] uppercase">Starter Pack</p>
+                        <p className="keep-anton font-['Anton'] leading-none text-[40px] sm:text-[48px] lg:text-[56px] text-white tracking-[2px] uppercase">Starter Pack</p>
                         <div className="content-stretch flex gap-[8px] items-center relative shrink-0">
                           <div className="h-[24px] relative shrink-0 w-[21px]">
                             <div className="absolute inset-[-4.17%_-4.76%]">
@@ -847,13 +853,13 @@ export default function App() {
                               </svg>
                             </div>
                           </div>
-                          <p className="font-['Nunito'] leading-[28px] text-[24px] sm:text-[28px] lg:text-[30px] text-white">x 6 Pack</p>
+                          <p className="font-['Nunito'] leading-[28px] text-[24px] sm:text-[28px] lg:text-[30px] text-white">{t('pricing_pack_qty_6')}</p>
                         </div>
                       </div>
                       <div className="flex-[1_0_0] min-h-px min-w-px relative w-full">
                         <div className="flex flex-col justify-end size-full">
                           <div className="content-stretch flex flex-col gap-[4px] items-start justify-end pb-[24px] relative size-full text-white">
-                            <p className="font-['Anton'] leading-[0] relative shrink-0 text-[0px]">
+                            <p className="keep-anton font-['Anton'] leading-[0] relative shrink-0 text-[0px]">
                               <span className="leading-[50px] sm:leading-[60px] text-[60px] sm:text-[72px]">390</span>
                               <span className="font-['Nunito'] leading-[36px] text-[24px] sm:text-[30px]">{` THB`}</span>
                             </p>
@@ -867,7 +873,7 @@ export default function App() {
                         onClick={() => openModal({ packId: 'starter' })}
                         className="bg-[#d4ff47] relative rounded-[32px] shrink-0 w-full pb-[8px] pt-[12px] px-[24px] cursor-pointer"
                       >
-                        <p className="font-['Nunito'] font-bold leading-[32px] text-[24px] text-black text-center">BUY NOW</p>
+                        <p className="font-['Nunito'] font-bold leading-[32px] text-[24px] text-black text-center">{t('pricing_buy_now')}</p>
                       </motion.button>
                     </div>
                   </div>
@@ -918,9 +924,9 @@ export default function App() {
 
                   {/* Content */}
                   <div className="relative overflow-clip rounded-[inherit] size-full">
-                    <div className="content-stretch flex flex-col gap-[16px] items-start p-[36px] relative size-full">
+                    <div className="content-stretch flex flex-col gap-[16px] items-start p-6 sm:p-[36px] relative size-full">
                       <div className="content-stretch flex flex-col gap-[16px] items-start justify-center relative shrink-0">
-                        <p className="font-['Anton'] leading-none text-[40px] sm:text-[48px] lg:text-[56px] text-white tracking-[2px] uppercase">Office Survivor</p>
+                        <p className="keep-anton font-['Anton'] leading-none text-[40px] sm:text-[48px] lg:text-[56px] text-white tracking-[2px] uppercase">Office Survivor</p>
                         <div className="content-stretch flex gap-[8px] items-center relative shrink-0">
                           <div className="h-[24px] relative shrink-0 w-[21px]">
                             <div className="absolute inset-[-4.17%_-4.76%]">
@@ -942,17 +948,17 @@ export default function App() {
                               </svg>
                             </div>
                           </div>
-                          <p className="font-['Nunito'] leading-[28px] text-[24px] sm:text-[28px] lg:text-[30px] text-white">x 24 Pack</p>
+                          <p className="font-['Nunito'] leading-[28px] text-[24px] sm:text-[28px] lg:text-[30px] text-white">{t('pricing_pack_qty_24')}</p>
                         </div>
                         <div className="font-['Nunito'] leading-[24px] text-[20px] sm:text-[22px] lg:text-[24px] text-white">
-                          <p className="mb-0"><span className="font-['Nunito'] font-bold leading-[24px]">Free Shipping!</span><span className="leading-[24px]"> Plus 1 free</span></p>
-                          <p className="leading-[24px]">CrunchFit Shaker</p>
+                          <p className="mb-0"><span className="font-['Nunito'] font-bold leading-[24px]">{t('pricing_free_shipping')}</span><span className="leading-[24px]">{t('pricing_free_shaker_suffix')}</span></p>
+                          <p className="leading-[24px]">{t('pricing_shaker_name')}</p>
                         </div>
                       </div>
                       <div className="flex-[1_0_0] min-h-px min-w-px relative w-full">
                         <div className="flex flex-col justify-end size-full">
                           <div className="content-stretch flex flex-col gap-[4px] items-start justify-end pb-[24px] relative size-full text-white">
-                            <p className="font-['Anton'] leading-[0] relative shrink-0 text-[0px]">
+                            <p className="keep-anton font-['Anton'] leading-[0] relative shrink-0 text-[0px]">
                               <span className="leading-[50px] sm:leading-[60px] text-[60px] sm:text-[72px]">1,490</span>
                               <span className="font-['Nunito'] leading-[36px] text-[24px] sm:text-[30px]">{` THB`}</span>
                             </p>
@@ -966,7 +972,7 @@ export default function App() {
                         onClick={() => openModal({ packId: 'office-survivor' })}
                         className="bg-[#d4ff47] relative rounded-[32px] shrink-0 w-full pb-[8px] pt-[12px] px-[24px] cursor-pointer"
                       >
-                        <p className="font-['Nunito'] font-bold leading-[32px] text-[24px] text-black text-center">BUY NOW</p>
+                        <p className="font-['Nunito'] font-bold leading-[32px] text-[24px] text-black text-center">{t('pricing_buy_now')}</p>
                       </motion.button>
                     </div>
                   </div>
@@ -991,7 +997,7 @@ export default function App() {
                 </div>
 
                 {/* Blue Character Illustrations */}
-                <div className="absolute h-[583.001px] left-[710px] top-[-48px] w-[429.276px] pointer-events-none overflow-hidden">
+                <div className="hidden lg:block absolute h-[583.001px] left-[710px] top-[-48px] w-[429.276px] pointer-events-none overflow-hidden">
                   <div className="absolute inset-[-0.69%_-0.93%]">
                     <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 437.276 591.001">
                       <g>
@@ -1030,13 +1036,13 @@ export default function App() {
 
                 {/* Content */}
                 <div className="relative overflow-clip rounded-[inherit] size-full">
-                  <div className="content-stretch flex flex-col gap-[24px] items-start p-[36px] relative w-full">
+                  <div className="content-stretch flex flex-col gap-[24px] items-start p-6 sm:p-[36px] relative w-full">
                     <div className="content-stretch flex flex-col gap-[16px] items-start justify-center text-white w-full">
                       <div className="content-stretch flex flex-wrap gap-[16px] items-end relative shrink-0">
-                        <p className="font-['Anton'] leading-none relative shrink-0 text-[40px] sm:text-[48px] lg:text-[56px] tracking-[2px] uppercase">CrunchFit Subscription</p>
-                        <p className="font-['Nunito'] leading-[24px] relative shrink-0 text-[20px] sm:text-[22px] lg:text-[24px]">(Direct to your desk, monthly)</p>
+                        <p className="keep-anton font-['Anton'] leading-none relative shrink-0 text-[40px] sm:text-[48px] lg:text-[56px] tracking-[2px] uppercase">CrunchFit Subscription</p>
+                        <p className="font-['Nunito'] leading-[24px] relative shrink-0 text-[20px] sm:text-[22px] lg:text-[24px]">{t('pricing_sub_caption')}</p>
                       </div>
-                      <p className="font-['Nunito'] leading-[24px] relative shrink-0 text-[20px] sm:text-[22px] lg:text-[24px]">Get an extra 15% off all packages (Cancel or change flavors anytime)</p>
+                      <p className="font-['Nunito'] leading-[24px] relative shrink-0 text-[20px] sm:text-[22px] lg:text-[24px]">{t('pricing_sub_detail')}</p>
                     </div>
                     <motion.button
                       whileHover={{ scale: 1.02 }}
@@ -1044,7 +1050,7 @@ export default function App() {
                       onClick={() => openModal({ type: 'subscription' })}
                       className="bg-[#d4ff47] relative rounded-[32px] shrink-0 w-full pb-[8px] pt-[12px] px-[24px] cursor-pointer"
                     >
-                      <p className="font-['Nunito'] font-bold leading-[32px] text-[24px] text-black text-center">SUBSCRIBE</p>
+                      <p className="font-['Nunito'] font-bold leading-[32px] text-[24px] text-black text-center">{t('pricing_subscribe')}</p>
                     </motion.button>
                   </div>
                 </div>
@@ -1063,37 +1069,18 @@ export default function App() {
       >
           <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-20">
             <h2 className="font-['Anton'] text-4xl sm:text-5xl lg:text-6xl text-center text-black uppercase tracking-wider mb-12 sm:mb-16">
-              What People Say
+              {t('testimonial_title')}
             </h2>
 
             {/* Masonry Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
               {[
-                {
-                  text: 'Completely guilt-free and so delicious! Love the high protein too!',
-                  author: "Namning",
-                  bg: "bg-pink-200",
-                },
-                {
-                  text: 'A snack I can finally eat without the guilt. Perfect for weight loss.',
-                  author: "Oat",
-                  bg: "bg-blue-200",
-                },
-                {
-                  text: 'Intense flavors! Not bland like your typical healthy snacks.',
-                  author: "Mint",
-                  bg: "bg-pink-200",
-                },
-                {
-                  text: 'Great for kids and adults. The whole family is addicted!',
-                  author: "Jane",
-                  bg: "bg-blue-200",
-                },
-                {
-                  text: 'This is my new staple bag snack. It goes everywhere with me!',
-                  author: "Pee",
-                  bg: "bg-pink-200",
-                },
+                { text: t('review_1'), author: "Namning", bg: "bg-pink-200" },
+                { text: t('review_2'), author: "Oat",     bg: "bg-blue-200" },
+                { text: t('review_3'), author: "Mint",    bg: "bg-pink-200" },
+                { text: t('review_4'), author: "Jane",    bg: "bg-blue-200" },
+                { text: t('review_5'), author: "Pee",     bg: "bg-pink-200" },
+                { text: t('review_6'), author: "Sam",     bg: "bg-blue-200" },
               ].map((testimonial, i) => (
                 <motion.div
                   key={i}
@@ -1114,7 +1101,7 @@ export default function App() {
                       ))}
                     </div>
 
-                    <p className="font-['Nunito'] text-black mb-4 leading-relaxed text-[24px] font-semi-bold">
+                    <p className="font-['Nunito'] text-black mb-4 leading-relaxed text-base sm:text-lg lg:text-[24px] font-semi-bold">
                       {testimonial.text}
                     </p>
                   </div>
@@ -1199,7 +1186,7 @@ export default function App() {
 
             {/* Follow Us */}
             <div className="shrink-0">
-              <p className="font-['Anton'] text-2xl sm:text-[30px] leading-[36px] text-white mb-6">Follow Us</p>
+              <p className="font-['Anton'] text-2xl sm:text-[30px] leading-[36px] text-white mb-6">{t('footer_follow')}</p>
               <div className="flex gap-6">
                 <motion.a
                   href="#"
@@ -1246,7 +1233,7 @@ export default function App() {
         </div>
 
         {/* Blue Decorative Background - Left */}
-        <div className="absolute h-[982px] left-1/2 -translate-x-1/2 top-[-157px] w-[997px] pointer-events-none">
+        <div className="absolute h-[982px] left-1/2 -translate-x-1/2 top-[-157px] w-[997px] pointer-events-none opacity-25">
           <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 1002.45 988.001">
             <g>
               <path d={footerSvgPaths.pddef600} fill="black" />

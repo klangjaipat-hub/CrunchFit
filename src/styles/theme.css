@@ -78,7 +78,24 @@
   --sidebar-ring: oklch(0.439 0 0);
 }
 
+/* ─── Thai font override ─────────────────────────────────────────────────────
+   Applied when LanguageContext sets class="lang-th" on <html>.
+   The [class*="font-["] selector overrides all Tailwind arbitrary font-family
+   utilities (Anton, Nunito, etc.) so Thai text renders in Prompt throughout.
+──────────────────────────────────────────────────────────────────────────── */
+html.lang-th {
+  font-family: 'Prompt', sans-serif;
+}
+html.lang-th [class*='font-['] {
+  font-family: 'Prompt', sans-serif !important;
+}
+/* Exception: elements that must keep Anton regardless of language */
+html.lang-th .keep-anton {
+  font-family: 'Anton', sans-serif !important;
+}
+
 @theme inline {
+  --font-prompt: 'Prompt', sans-serif;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);

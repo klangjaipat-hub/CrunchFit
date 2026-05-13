@@ -8,9 +8,11 @@ import {
   DialogTitle,
 } from '../app/components/ui/dialog';
 import { useCart, PACKS, FLAVORS, SUBSCRIPTION_DISCOUNT, CartItem } from '../context/CartContext';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function PackageSelectionModal() {
   const { isModalOpen, closeModal, modalPreset, addItem, openDrawer } = useCart();
+  const { t } = useLanguage();
 
   const [selectedPackId, setSelectedPackId] = useState<string>('starter');
   const [selectedFlavor, setSelectedFlavor] = useState<string>('Original Flavor');
@@ -62,14 +64,14 @@ export default function PackageSelectionModal() {
         <div className="p-6 sm:p-8 flex flex-col gap-6 max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="font-['Anton'] text-3xl text-black uppercase tracking-wide">
-              Choose Your Pack
+              {t('modal_title')}
             </DialogTitle>
           </DialogHeader>
 
           {/* Pack Selection */}
           <div className="flex flex-col gap-2">
             <p className="font-['Nunito'] font-bold text-xs text-black/50 uppercase tracking-widest">
-              Pack
+              {t('modal_label_pack')}
             </p>
             <div className="grid grid-cols-2 gap-3">
               {PACKS.map(pack => {
@@ -94,13 +96,15 @@ export default function PackageSelectionModal() {
                       </span>
                     )}
                     <p className="font-['Anton'] text-lg text-black leading-tight">{pack.name}</p>
-                    <p className="font-['Nunito'] text-sm text-black/60">{pack.description}</p>
+                    <p className="font-['Nunito'] text-sm text-black/60">
+                      {pack.id === 'starter' ? t('pack_desc_starter') : t('pack_desc_office')}
+                    </p>
                     <p className="font-['Nunito'] font-bold text-black mt-1">
                       ฿{pack.price.toLocaleString()}
                     </p>
                     {pack.perks.length > 0 && (
                       <p className="font-['Nunito'] text-xs text-black/50 mt-0.5">
-                        {pack.perks.join(' · ')}
+                        {[t('pack_perk_shipping'), t('pack_perk_shaker')].join(' · ')}
                       </p>
                     )}
                   </motion.button>
@@ -112,7 +116,7 @@ export default function PackageSelectionModal() {
           {/* Flavor Selection */}
           <div className="flex flex-col gap-2">
             <p className="font-['Nunito'] font-bold text-xs text-black/50 uppercase tracking-widest">
-              Flavor
+              {t('modal_label_flavor')}
             </p>
             <div className="flex flex-wrap gap-2">
               {FLAVORS.map(flavor => (
@@ -136,7 +140,7 @@ export default function PackageSelectionModal() {
           {/* Purchase Type */}
           <div className="flex flex-col gap-2">
             <p className="font-['Nunito'] font-bold text-xs text-black/50 uppercase tracking-widest">
-              Purchase Type
+              {t('modal_label_type')}
             </p>
             <div className="grid grid-cols-2 gap-3">
               {(['one-time', 'subscription'] as const).map(type => (
@@ -152,11 +156,11 @@ export default function PackageSelectionModal() {
                   ].join(' ')}
                 >
                   <p className="font-['Nunito'] font-bold text-sm">
-                    {type === 'one-time' ? 'One-Time' : 'Subscribe & Save'}
+                    {type === 'one-time' ? t('modal_one_time') : t('modal_subscribe_save')}
                   </p>
                   {type === 'subscription' && (
                     <p className="font-['Nunito'] text-xs mt-0.5 opacity-70">
-                      15% off · Cancel anytime
+                      {t('modal_sub_note')}
                     </p>
                   )}
                 </motion.button>
@@ -167,7 +171,7 @@ export default function PackageSelectionModal() {
           {/* Price Summary */}
           <div className="bg-gray-50 rounded-[14px] p-4 flex items-center justify-between border border-black/10">
             <div>
-              <p className="font-['Nunito'] font-bold text-black">Total</p>
+              <p className="font-['Nunito'] font-bold text-black">{t('modal_total')}</p>
               {selectedType === 'subscription' && (
                 <p className="font-['Nunito'] text-xs text-black/40 line-through">
                   ฿{basePrice.toLocaleString()}
@@ -175,10 +179,10 @@ export default function PackageSelectionModal() {
               )}
             </div>
             <div className="text-right">
-              <p className="font-['Anton'] text-3xl text-black">฿{finalPrice.toLocaleString()}</p>
+              <p className="keep-anton font-['Anton'] text-3xl text-black">฿{finalPrice.toLocaleString()}</p>
               {selectedType === 'subscription' && savings > 0 && (
                 <p className="font-['Nunito'] text-xs text-green-600 font-bold">
-                  Save ฿{savings.toLocaleString()}
+                  {t('modal_save_prefix')} ฿{savings.toLocaleString()}
                 </p>
               )}
             </div>
@@ -188,13 +192,13 @@ export default function PackageSelectionModal() {
           {volumeWarning && (
             <div className="bg-[#FF5A4B]/10 border border-[#FF5A4B] rounded-[14px] p-4 flex flex-col gap-1">
               <p className="font-['Nunito'] font-bold text-sm text-[#FF5A4B]">
-                Max 100 units per item reached.
+                {t('modal_volume_warning')}
               </p>
               <a
                 href="mailto:contact@crunchfit.co"
                 className="font-['Nunito'] text-sm text-black underline"
               >
-                Contact Staff for Volume Billing →
+                {t('modal_contact')}
               </a>
             </div>
           )}
@@ -206,7 +210,7 @@ export default function PackageSelectionModal() {
             onClick={handleAddToCart}
             className="w-full bg-[#d4ff47] rounded-[32px] py-4 font-['Nunito'] font-bold text-xl text-black shadow-[3px_3px_0px_0px_black] hover:shadow-[5px_5px_0px_0px_black] transition-shadow"
           >
-            Add to Cart
+            {t('modal_add_to_cart')}
           </motion.button>
         </div>
       </DialogContent>

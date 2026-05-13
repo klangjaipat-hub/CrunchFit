@@ -7,10 +7,12 @@ import {
   DrawerClose,
 } from '../app/components/ui/drawer';
 import { useCart } from '../context/CartContext';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function CartDrawer() {
   const { items, isDrawerOpen, closeDrawer, removeItem, updateQty, subtotal, totalQty } =
     useCart();
+  const { t } = useLanguage();
   const navigate = useNavigate();
 
   const handleCheckout = () => {
@@ -26,7 +28,7 @@ export default function CartDrawer() {
           <div className="flex items-center gap-2">
             <ShoppingBag className="w-5 h-5" />
             <span className="font-['Anton'] text-xl text-black uppercase tracking-wide">
-              Your Cart
+              {t('cart_title')}
             </span>
             {totalQty > 0 && (
               <span className="bg-[#d4ff47] text-black text-xs font-['Nunito'] font-bold px-2 py-0.5 rounded-full border border-black">
@@ -46,12 +48,12 @@ export default function CartDrawer() {
           {items.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-48 gap-3 text-center">
               <ShoppingBag className="w-10 h-10 text-black/20" />
-              <p className="font-['Nunito'] text-base text-black/40">Your cart is empty</p>
+              <p className="font-['Nunito'] text-base text-black/40">{t('cart_empty')}</p>
               <button
                 onClick={closeDrawer}
                 className="font-['Nunito'] font-bold text-sm text-black underline"
               >
-                Continue Shopping
+                {t('cart_continue')}
               </button>
             </div>
           ) : (
@@ -82,7 +84,7 @@ export default function CartDrawer() {
                                 : 'bg-gray-100 text-black/60',
                             ].join(' ')}
                           >
-                            {item.type === 'subscription' ? 'Monthly Sub' : 'One-Time'}
+                            {item.type === 'subscription' ? t('cart_badge_monthly') : t('cart_badge_once')}
                           </span>
                         </div>
                         <button
@@ -112,7 +114,7 @@ export default function CartDrawer() {
                             <Plus className="w-3 h-3" />
                           </button>
                         </div>
-                        <p className="font-['Anton'] text-lg text-black">
+                        <p className="keep-anton font-['Anton'] text-lg text-black">
                           ฿{(item.price * item.qty).toLocaleString()}
                         </p>
                       </div>
@@ -120,13 +122,13 @@ export default function CartDrawer() {
                       {atLimit && (
                         <div className="mt-3 p-3 bg-[#d4ff47] rounded-[10px] border border-black">
                           <p className="font-['Nunito'] font-bold text-xs text-black">
-                            Max 100 units reached.
+                            {t('cart_max_reached')}
                           </p>
                           <a
                             href="mailto:contact@crunchfit.co"
                             className="font-['Nunito'] text-xs text-black underline"
                           >
-                            Contact Staff for Volume Billing →
+                            {t('cart_contact')}
                           </a>
                         </div>
                       )}
@@ -142,11 +144,11 @@ export default function CartDrawer() {
         {items.length > 0 && (
           <div className="border-t border-black/10 px-5 py-4 flex flex-col gap-3 shrink-0">
             <div className="flex justify-between items-center">
-              <p className="font-['Nunito'] text-base text-black/60">Subtotal</p>
-              <p className="font-['Anton'] text-2xl text-black">฿{subtotal.toLocaleString()}</p>
+              <p className="font-['Nunito'] text-base text-black/60">{t('cart_subtotal')}</p>
+              <p className="keep-anton font-['Anton'] text-2xl text-black">฿{subtotal.toLocaleString()}</p>
             </div>
             <p className="font-['Nunito'] text-xs text-black/40">
-              Taxes &amp; shipping calculated at checkout
+              {t('cart_tax_note')}
             </p>
             <motion.button
               whileHover={{ scale: 1.02 }}
@@ -154,7 +156,7 @@ export default function CartDrawer() {
               onClick={handleCheckout}
               className="w-full bg-[#d4ff47] rounded-[32px] py-4 font-['Nunito'] font-bold text-lg text-black shadow-[3px_3px_0px_0px_black] hover:shadow-[5px_5px_0px_0px_black] transition-shadow"
             >
-              Proceed to Checkout →
+              {t('cart_checkout')}
             </motion.button>
           </div>
         )}
