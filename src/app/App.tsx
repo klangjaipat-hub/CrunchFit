@@ -8,7 +8,7 @@ import image_1f76d9f4f147bfeb3dd7b5cc64678f604ab0d4ff from 'figma:asset/1f76d9f4
 import skyBackground from 'figma:asset/92cf502b59b7bf01e794c91af5e30d6dc3e6f9b9.png'
 import { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ShoppingBag, AlertCircle, CheckCircle2, Package, CalendarClock, Globe } from 'lucide-react';
+import { ShoppingBag, AlertCircle, CheckCircle2, Package, CalendarClock, Globe, X } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useLanguage } from '../context/LanguageContext';
 import svgPaths from '../imports/svg-abgizgdck8';
@@ -26,19 +26,43 @@ import imgContainer from "figma:asset/f820601cdd1c962b4234b80b4c11431bf8447210.p
 import imgContainer1 from "figma:asset/5d42d89537a46e8f97bcd9396d3860f24f89e84a.png";
 import imgContainer2 from "figma:asset/7331c488a7d8f6b3f8f5ab61b638ba30895047d9.png";
 import imgUnion from "figma:asset/55de28647d286b6cc32a76135e9937b9299e85f1.png";
+import imgSpringPark from '../assets/spring-park-freshly-cut-lawn-vertical-frame-background-wallpaper-idea.jpg';
+import imgHotel from '../assets/blurred-illuminated-entry-hotel.jpg';
 
 export default function App() {
   const { openModal, openDrawer, items } = useCart();
   const { lang, toggleLang, t } = useLanguage();
   const totalItems = items.reduce((sum, i) => sum + i.qty, 0);
+  const [isSideMenuOpen, setIsSideMenuOpen] = useState(false);
+
+  const navSections = [
+    { id: 'hero',      labelEn: 'Home',          labelTh: 'หน้าแรก' },
+    { id: 'about',     labelEn: 'About',          labelTh: 'เกี่ยวกับ' },
+    { id: 'flavors',   labelEn: 'Flavors',        labelTh: 'รสชาติ' },
+    { id: 'nutrition', labelEn: 'Nutrition',      labelTh: 'โภชนาการ' },
+    { id: 'pricing',   labelEn: 'Pricing',        labelTh: 'ราคา' },
+    { id: 'reviews',   labelEn: 'Reviews',        labelTh: 'รีวิว' },
+    { id: 'contact',   labelEn: 'Contact',        labelTh: 'ติดต่อ' },
+  ];
+
+  const scrollTo = (id: string) => {
+    setIsSideMenuOpen(false);
+    setTimeout(() => {
+      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 300);
+  };
 
   return (
     <div className="w-full min-h-screen bg-white overflow-x-hidden">
       {/* Fixed Navbar */}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-black/10">
         <div className="w-full px-4 sm:px-6 lg:px-10 py-4 flex items-center justify-between">
-          {/* Left: Puff Ball */}
-          <div className="flex items-center gap-3 sm:gap-5">
+          {/* Left: Mascot Button */}
+          <button
+            onClick={() => setIsSideMenuOpen(true)}
+            aria-label="Open menu"
+            className="flex items-center gap-3 sm:gap-5"
+          >
             <div className="w-12 h-12 sm:w-16 sm:h-16 relative overflow-hidden rounded-full">
               <img
                 src={imgGeminiGeneratedImageXbgr6Vxbgr6Vxbgr3}
@@ -46,7 +70,7 @@ export default function App() {
                 className="w-full h-full object-cover animate-[spin_20s_linear_infinite]"
               />
             </div>
-          </div>
+          </button>
 
           {/* Center: Logo */}
           <h1 className="absolute left-1/2 -translate-x-1/2 font-['Nunito'] font-black text-2xl sm:text-4xl lg:text-5xl text-black whitespace-nowrap">
@@ -59,16 +83,17 @@ export default function App() {
             <button
               onClick={toggleLang}
               aria-label={`Switch to ${lang === 'en' ? 'Thai' : 'English'}`}
-              className="h-[42px] w-[42px] sm:h-[52px] sm:w-[52px] flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors duration-200"
+              className="flex items-center gap-1.5 hover:opacity-60 transition-opacity duration-200"
             >
-              <Globe className="w-5 h-5 text-black" />
+              <Globe className="w-4 h-4 text-black" />
+              <span className="font-['Nunito'] font-bold text-sm text-black uppercase">{lang}</span>
             </button>
 
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => openModal()}
-              className="bg-[#d4ff47] rounded-full transition-shadow duration-200 hover:shadow-[0_6px_20px_rgba(212,255,71,0.4)] active:shadow-[0_2px_10px_rgba(212,255,71,0.3)]"
+              className="min-w-[147px] sm:min-w-[200px] bg-[#d4ff47] rounded-full transition-shadow duration-200 hover:shadow-[0_6px_20px_rgba(212,255,71,0.4)] active:shadow-[0_2px_10px_rgba(212,255,71,0.3)]"
             >
               <div className="flex items-center justify-center pb-[6px] pt-[10px] px-[16px] sm:pb-[8px] sm:pt-[12px] sm:px-[24px]">
                 <p className="font-['Nunito'] font-bold text-[15px] sm:text-[20px] leading-[32px] text-black whitespace-nowrap">{t('nav_buy_now')}</p>
@@ -101,13 +126,84 @@ export default function App() {
         </div>
       </nav>
 
+      {/* Side Menu Drawer */}
+      <AnimatePresence>
+        {isSideMenuOpen && (
+          <>
+            {/* Backdrop */}
+            <motion.div
+              key="backdrop"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.25 }}
+              onClick={() => setIsSideMenuOpen(false)}
+              className="fixed inset-0 z-[60] bg-black/50"
+            />
+
+            {/* Drawer */}
+            <motion.div
+              key="drawer"
+              initial={{ x: '-100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '-100%' }}
+              transition={{ type: 'spring', stiffness: 320, damping: 32 }}
+              className="fixed top-0 left-0 z-[70] h-full w-72 sm:w-80 bg-black flex flex-col shadow-[4px_0px_0px_0px_#d4ff47]"
+            >
+              {/* Drawer Header */}
+              <div className="flex items-center justify-between px-6 py-5 border-b border-white/10">
+                <p className="font-['Nunito'] font-black text-2xl text-white">CrunchFit</p>
+                <button
+                  onClick={() => setIsSideMenuOpen(false)}
+                  aria-label="Close menu"
+                  className="h-10 w-10 flex items-center justify-center rounded-full hover:bg-white/10 transition-colors"
+                >
+                  <X className="w-5 h-5 text-white" />
+                </button>
+              </div>
+
+              {/* Nav Items */}
+              <nav className="flex flex-col gap-1 px-4 py-6 flex-1">
+                {navSections.map((section, i) => (
+                  <motion.button
+                    key={section.id}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: i * 0.05 + 0.1, duration: 0.25 }}
+                    onClick={() => scrollTo(section.id)}
+                    className="group flex items-center gap-4 px-4 py-3 rounded-[14px] hover:bg-[#d4ff47] transition-colors duration-150 text-left"
+                  >
+                    <span className="font-['Anton'] text-xl text-white group-hover:text-black tracking-wide uppercase transition-colors duration-150">
+                      {lang === 'th' ? section.labelTh : section.labelEn}
+                    </span>
+                  </motion.button>
+                ))}
+              </nav>
+
+              {/* Drawer Footer */}
+              <div className="px-6 py-5 border-t border-white/10">
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={() => { setIsSideMenuOpen(false); openModal(); }}
+                  className="w-full bg-[#d4ff47] rounded-[32px] py-3 font-['Nunito'] font-bold text-lg text-black"
+                >
+                  {t('nav_buy_now')}
+                </motion.button>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+
       {/* Hero Section */}
       <motion.section
+        id="hero"
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-100px" }}
         transition={{ duration: 0.8, ease: "easeOut" }}
-        className="relative w-full pt-[5rem] sm:pt-[14rem] lg:pt-[20rem] pb-4 sm:pb-6 lg:pb-8 flex items-center justify-center overflow-hidden"
+        className="relative w-full pt-[10rem] sm:pt-[18rem] lg:pt-[26rem] pb-4 sm:pb-6 lg:pb-8 flex items-center justify-center overflow-hidden"
       >
         {/* Content Container */}
         <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-20 relative overflow-visible">
@@ -237,6 +333,7 @@ export default function App() {
 
       {/* Guilt-Free Snack Section */}
       <motion.section
+        id="about"
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-100px" }}
@@ -253,7 +350,7 @@ export default function App() {
             <div className="max-w-4xl mx-auto mb-32 sm:mb-40 lg:mb-52">
               {lang === 'th' ? (
                 <p className="font-['Nunito'] text-center text-black leading-relaxed text-base sm:text-xl lg:text-[24px] text-[#464646]">
-                  แนะนำ CrunchFit Plant-Protein Puffs: ขนมคลีนสุดจัดที่คุณรอคอย! ทำจากโปรตีนถั่วลันเตาและข้าวกล้องออร์แกนิก อบลมร้อน 100% ไม่ทอด ทุกถุงให้ความกรอบอร่อยแบบไม่มีน้ำมัน พร้อม<span className="font-bold">โปรตีน 12 กรัม</span>และเพียง<span className="font-bold">90 แคลอรี่</span> ไม่มี MSG โซเดียมน้อยกว่า 50% เหมาะสำหรับคนรักสุขภาพและคนทำงานออฟฟิศ
+                  แนะนำ CrunchFit Plant-Protein Puffs: ขนมคลีนสุดจัดที่คุณรอคอย! ทำจากโปรตีนถั่วลันเตาและข้าวกล้องออร์แกนิก อบลมร้อน 100% ไม่ทอด ทุกถุงให้ความกรอบอร่อยแบบไม่มีน้ำมัน พร้อม <span className="font-semibold">โปรตีน 12 กรัม</span>และ เพียง <span className="font-semibold">90 แคลอรี่</span> ไม่มี MSG โซเดียมน้อยกว่า 50% เหมาะสำหรับคนรักสุขภาพและคนทำงานออฟฟิศ
                 </p>
               ) : (
                 <p className="font-['Nunito'] text-center text-black leading-relaxed text-base sm:text-xl lg:text-[24px] text-[#464646]">Meet CrunchFit Plant-Protein Puffs: the ultimate guilt-free snack! Made from golden pea protein and organic brown rice, our puffs are 100% air-roasted, never fried. Each bag delivers a satisfying, oil-free crunch with <span className="font-bold">12g of protein</span> and only <span className="font-bold">90 calories</span>. With zero MSG and 50% less sodium, it's the perfect healthy bite for fitness lovers and busy office workers.</p>
@@ -316,6 +413,7 @@ export default function App() {
 
       {/* Flavor Split Section */}
       <motion.section
+        id="flavors"
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-100px" }}
@@ -551,6 +649,7 @@ export default function App() {
 
       {/* Nutrition Facts Section */}
       <motion.section
+        id="nutrition"
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-100px" }}
@@ -559,7 +658,7 @@ export default function App() {
       >
           {/* Background Image - Full Opacity */}
           <div className="absolute inset-0">
-            <img src={imgUnion} alt="" className="w-full h-full object-cover" />
+            <img src={imgUnion} alt="" className="w-full h-full object-fill" />
           </div>
 
           <div className="relative w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-20">
@@ -677,9 +776,9 @@ export default function App() {
 
                   <div className="border-b-4 border-black py-2">
                     <p className="font-['Nunito'] font-bold leading-[24px] text-[20px]">{t('nutrition_amount')}</p>
-                    <div className="keep-anton flex justify-between items-center font-['Anton'] text-3xl sm:text-4xl lg:text-[36px] leading-[40px]">
+                    <div className="flex justify-between items-center font-['Anton'] text-3xl sm:text-4xl lg:text-[36px] leading-[40px]">
                       <p>{t('nutrition_calories')}</p>
-                      <p>90</p>
+                      <p className="keep-anton">90</p>
                     </div>
                   </div>
 
@@ -771,6 +870,7 @@ export default function App() {
 
       {/* Pricing Section */}
       <motion.section
+        id="pricing"
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-100px" }}
@@ -797,7 +897,7 @@ export default function App() {
                   {/* Background Image with Overlay */}
                   <div className="absolute inset-0 rounded-[20px]">
                     <div className="absolute inset-0 overflow-hidden rounded-[20px]">
-                      <img src={imgContainer} alt="" className="absolute h-[226.2%] left-[-16.53%] max-w-none top-[-63.03%] w-[133.23%]" />
+                      <img src={imgSpringPark} alt="" className="absolute inset-0 w-full h-full object-cover scale-110 blur-[2px]" />
                     </div>
                     <div className="absolute bg-[rgba(0,0,0,0.4)] inset-0 rounded-[20px]" />
                   </div>
@@ -891,7 +991,7 @@ export default function App() {
                   {/* Background Image with Overlay */}
                   <div className="absolute inset-0 rounded-[20px]">
                     <div className="absolute inset-0 overflow-hidden rounded-[20px]">
-                      <img alt="" className="absolute h-[157.4%] left-[-54.18%] max-w-none top-[-33.17%] w-[208.47%]" src={imgContainer1} />
+                      <img alt="" className="absolute inset-0 w-full h-full object-cover scale-110 blur-[2px]" src={imgHotel} />
                     </div>
                     <div className="absolute bg-[rgba(0,0,0,0.4)] inset-0 rounded-[20px]" />
                   </div>
@@ -991,7 +1091,7 @@ export default function App() {
                 {/* Background Image with Overlay */}
                 <div className="absolute inset-0 rounded-[20px]">
                   <div className="absolute inset-0 overflow-hidden rounded-[20px]">
-                    <img alt="" className="absolute h-[316.98%] left-0 max-w-none top-[-92.69%] w-full" src={imgContainer2} />
+                    <img alt="" className="absolute inset-0 w-full h-full object-cover scale-110 blur-[2px]" src={imgContainer2} />
                   </div>
                   <div className="absolute bg-[rgba(0,0,0,0.4)] inset-0 rounded-[20px]" />
                 </div>
@@ -1061,6 +1161,7 @@ export default function App() {
 
       {/* Testimonials Section */}
       <motion.section
+        id="reviews"
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-100px" }}
@@ -1105,7 +1206,7 @@ export default function App() {
                       {testimonial.text}
                     </p>
                   </div>
-                  <p className="font-['Anton'] text-base sm:text-lg text-black uppercase mt-auto">
+                  <p className="keep-anton font-['Anton'] text-base sm:text-lg text-black uppercase mt-auto">
                     {testimonial.author}
                   </p>
                 </motion.div>
@@ -1116,6 +1217,7 @@ export default function App() {
 
       {/* Footer */}
       <motion.footer
+        id="contact"
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-100px" }}

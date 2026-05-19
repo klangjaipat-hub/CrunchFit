@@ -93,6 +93,12 @@ html.lang-th [class*='font-['] {
 html.lang-th .keep-anton {
   font-family: 'Anton', sans-serif !important;
 }
+/* Downgrade bold/black weights to semi-bold (600) in Thai for better Prompt readability */
+html.lang-th .font-bold:not(.keep-anton),
+html.lang-th .font-extrabold:not(.keep-anton),
+html.lang-th .font-black:not(.keep-anton) {
+  font-weight: 600 !important;
+}
 
 @theme inline {
   --font-prompt: 'Prompt', sans-serif;
