@@ -199,10 +199,10 @@ export default function App() {
       {/* Hero Section */}
       <motion.section
         id="hero"
-        initial={{ opacity: 0, y: 50 }}
-        whileInView={{ opacity: 1, y: 0 }}
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
         viewport={{ once: true, margin: "-100px" }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
         className="relative w-full pt-[10rem] sm:pt-[18rem] lg:pt-[26rem] pb-4 sm:pb-6 lg:pb-8 flex items-center justify-center overflow-hidden"
       >
         {/* Content Container */}
@@ -213,7 +213,7 @@ export default function App() {
             <div className="absolute inset-0">
               <div className="w-[80%] h-[95%] mx-auto block relative overflow-hidden flex items-center bg-cover bg-center rounded-[20px]" style={{ backgroundImage: `url(${skyBackground})` }}>
                 <motion.div
-                  className="flex gap-8 absolute whitespace-nowrap items-center"
+                  className="flex gap-8 absolute whitespace-nowrap items-center will-change-transform"
                   animate={{
                     x: [0, "-25%", "-25%", "-50%"],
                   }}
@@ -334,10 +334,10 @@ export default function App() {
       {/* Guilt-Free Snack Section */}
       <motion.section
         id="about"
-        initial={{ opacity: 0, y: 50 }}
-        whileInView={{ opacity: 1, y: 0 }}
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
         viewport={{ once: true, margin: "-100px" }}
-        transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
         className="relative w-full pt-12 sm:pt-16 lg:pt-24 pb-0 bg-white overflow-hidden"
       >
           <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-20">
@@ -379,7 +379,7 @@ export default function App() {
                 repeat: Infinity,
                 ease: "easeInOut",
               }}
-              className="absolute bottom-0 left-[8%] sm:left-[10%] lg:left-[13%] w-[30%] sm:w-[28%] lg:w-[26%] max-w-[400px]"
+              className="absolute bottom-0 left-[8%] sm:left-[10%] lg:left-[13%] w-[30%] sm:w-[28%] lg:w-[26%] max-w-[400px] will-change-transform"
             >
               <svg viewBox="0 0 507.611 485.998" fill="none" className="w-full h-auto">
                 <path d={svgPaths.p27933b00} fill="black" />
@@ -399,7 +399,7 @@ export default function App() {
                 ease: "easeInOut",
                 delay: 0.7,
               }}
-              className="absolute bottom-0 right-[8%] sm:right-[10%] lg:right-[13%] w-[26%] sm:w-[24%] lg:w-[22%] max-w-[350px]"
+              className="absolute bottom-0 right-[8%] sm:right-[10%] lg:right-[13%] w-[26%] sm:w-[24%] lg:w-[22%] max-w-[350px] will-change-transform"
             >
               <svg viewBox="0 0 428.596 475.038" fill="none" className="w-full h-auto scale-y-[-1] rotate-180">
                 <ellipse cx="394.956" cy="440.563" fill="black" rx="19.5181" ry="19.7172" />
@@ -414,10 +414,10 @@ export default function App() {
       {/* Flavor Split Section */}
       <motion.section
         id="flavors"
-        initial={{ opacity: 0, y: 50 }}
-        whileInView={{ opacity: 1, y: 0 }}
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
         viewport={{ once: true, margin: "-100px" }}
-        transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
         className="relative w-full py-12 sm:py-16 lg:py-24 bg-white"
       >
           <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-20">
@@ -457,8 +457,8 @@ export default function App() {
               {/* Left: Truffle Vegan Cheese */}
               <motion.div 
                 className="absolute left-0 top-1/2 -translate-y-1/2 hidden lg:block"
-                initial={{ opacity: 0, x: -50 }}
-                whileInView={{ opacity: 1, x: 0 }}
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
                 viewport={{ once: true, margin: "-100px" }}
                 transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
               >
@@ -484,8 +484,8 @@ export default function App() {
               {/* Center: Product Image */}
               <motion.div 
                 className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[280px] sm:w-[350px] lg:w-[463px] h-[280px] sm:h-[350px] lg:h-[456px] z-20"
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
                 viewport={{ once: true, margin: "-100px" }}
                 transition={{ duration: 0.7, delay: 0.3, ease: "easeOut" }}
               >
@@ -505,8 +505,8 @@ export default function App() {
               {/* Right: Spicy Korean BBQ */}
               <motion.div 
                 className="absolute right-0 top-1/2 -translate-y-1/2 hidden lg:block"
-                initial={{ opacity: 0, x: 50 }}
-                whileInView={{ opacity: 1, x: 0 }}
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
                 viewport={{ once: true, margin: "-100px" }}
                 transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
               >
@@ -532,8 +532,8 @@ export default function App() {
               {/* Mobile flavor text - stacked vertically */}
               <motion.div 
                 className="lg:hidden absolute bottom-0 left-0 right-0 flex justify-between px-4"
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
                 viewport={{ once: true, margin: "-100px" }}
                 transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
               >
@@ -578,8 +578,8 @@ export default function App() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
               {/* High Plant Protein */}
               <motion.div
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
                 viewport={{ once: true, margin: "-100px" }}
                 transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
                 whileHover={{
@@ -595,8 +595,8 @@ export default function App() {
 
               {/* Low Calorie & Zero Fat */}
               <motion.div
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
                 viewport={{ once: true, margin: "-100px" }}
                 transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
                 whileHover={{
@@ -612,8 +612,8 @@ export default function App() {
 
               {/* Clean & Safe Ingredients */}
               <motion.div
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
                 viewport={{ once: true, margin: "-100px" }}
                 transition={{ duration: 0.6, delay: 0.3, ease: "easeOut" }}
                 whileHover={{
@@ -629,8 +629,8 @@ export default function App() {
 
               {/* Vegan Friendly */}
               <motion.div
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
                 viewport={{ once: true, margin: "-100px" }}
                 transition={{ duration: 0.6, delay: 0.4, ease: "easeOut" }}
                 whileHover={{
@@ -650,10 +650,10 @@ export default function App() {
       {/* Nutrition Facts Section */}
       <motion.section
         id="nutrition"
-        initial={{ opacity: 0, y: 50 }}
-        whileInView={{ opacity: 1, y: 0 }}
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
         viewport={{ once: true, margin: "-100px" }}
-        transition={{ duration: 0.8, delay: 0.5, ease: "easeOut" }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
         className="relative w-full py-12 sm:py-16 lg:py-24 overflow-hidden"
       >
           {/* Background Image - Full Opacity */}
@@ -685,7 +685,7 @@ export default function App() {
                       repeat: Infinity,
                       ease: "easeInOut",
                     }}
-                    className="absolute left-[8%] top-0 w-[48%] z-10"
+                    className="absolute left-[8%] top-0 w-[48%] z-10 will-change-transform"
                     style={{ transform: 'rotate(-10deg)' }}
                   >
                     <img
@@ -871,10 +871,10 @@ export default function App() {
       {/* Pricing Section */}
       <motion.section
         id="pricing"
-        initial={{ opacity: 0, y: 50 }}
-        whileInView={{ opacity: 1, y: 0 }}
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
         viewport={{ once: true, margin: "-100px" }}
-        transition={{ duration: 0.8, delay: 0.6, ease: "easeOut" }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
         className="w-full py-12 sm:py-16 lg:py-24 bg-white"
       >
           <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-20">
@@ -896,7 +896,7 @@ export default function App() {
                 >
                   {/* Background Image with Overlay */}
                   <div className="absolute inset-0 rounded-[20px]">
-                    <div className="absolute inset-0 overflow-hidden rounded-[20px]">
+                    <div className="absolute inset-0 overflow-hidden rounded-[20px] [transform:translateZ(0)]">
                       <img src={imgSpringPark} alt="" className="absolute inset-0 w-full h-full object-cover scale-110 blur-[2px]" />
                     </div>
                     <div className="absolute bg-[rgba(0,0,0,0.4)] inset-0 rounded-[20px]" />
@@ -990,7 +990,7 @@ export default function App() {
                 >
                   {/* Background Image with Overlay */}
                   <div className="absolute inset-0 rounded-[20px]">
-                    <div className="absolute inset-0 overflow-hidden rounded-[20px]">
+                    <div className="absolute inset-0 overflow-hidden rounded-[20px] [transform:translateZ(0)]">
                       <img alt="" className="absolute inset-0 w-full h-full object-cover scale-110 blur-[2px]" src={imgHotel} />
                     </div>
                     <div className="absolute bg-[rgba(0,0,0,0.4)] inset-0 rounded-[20px]" />
@@ -1090,7 +1090,7 @@ export default function App() {
               >
                 {/* Background Image with Overlay */}
                 <div className="absolute inset-0 rounded-[20px]">
-                  <div className="absolute inset-0 overflow-hidden rounded-[20px]">
+                  <div className="absolute inset-0 overflow-hidden rounded-[20px] [transform:translateZ(0)]">
                     <img alt="" className="absolute inset-0 w-full h-full object-cover scale-110 blur-[2px]" src={imgContainer2} />
                   </div>
                   <div className="absolute bg-[rgba(0,0,0,0.4)] inset-0 rounded-[20px]" />
@@ -1162,10 +1162,10 @@ export default function App() {
       {/* Testimonials Section */}
       <motion.section
         id="reviews"
-        initial={{ opacity: 0, y: 50 }}
-        whileInView={{ opacity: 1, y: 0 }}
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
         viewport={{ once: true, margin: "-100px" }}
-        transition={{ duration: 0.8, delay: 0.7, ease: "easeOut" }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
         className="w-full py-12 sm:py-16 lg:py-24 bg-white"
       >
           <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-20">
@@ -1218,10 +1218,10 @@ export default function App() {
       {/* Footer */}
       <motion.footer
         id="contact"
-        initial={{ opacity: 0, y: 50 }}
-        whileInView={{ opacity: 1, y: 0 }}
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
         viewport={{ once: true, margin: "-100px" }}
-        transition={{ duration: 0.8, delay: 0.7, ease: "easeOut" }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
         className="w-full bg-black py-12 sm:py-16 lg:py-20 relative overflow-hidden mx-[0px]"
       >
         <div className="w-full max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-20 relative z-10">
